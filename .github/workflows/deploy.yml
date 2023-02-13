@@ -6,15 +6,17 @@ jobs:
     steps:
 
       # Log into Azure
+    - uses: actions/checkout@master
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-       # Deploy ARM Template
+      # Deploy ARM Template
     - name: deploy
       uses: Azure/arm-deploy@v1.0.9
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
-        template: ./Resources/ARM-Templates/container-webapp-template.json
+        template: ./resources/ARM-Templates/container-webapp-template.json
+        parameters: 'storagePrefix=mystore storageSKU=Standard_LRS'
         failOnStdErr: false
